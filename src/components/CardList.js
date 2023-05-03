@@ -1,10 +1,10 @@
 import Card from './Card';
 
-const CardList = ({contacts}) => {
+const CardList = ({searchedContacts, action, onDeleteContact}) => {
     return (
       <div>
         {
-          contacts.map((contact, i) => {
+          searchedContacts.map((contact, i) => {
             return <Card 
               key={i} 
               photo={contact.picture['medium']}
@@ -12,6 +12,8 @@ const CardList = ({contacts}) => {
               email={contact.email}
               phone={contact.cell}
               contact={contact}
+              action={action}
+              onDeleteContact={onDeleteContact}
               />
           })  
         }

@@ -6,12 +6,14 @@ import Scroll from './components/Scroll';
 import {ErrorBoundary} from 'react-error-boundary';
 import ErrorFallback from './components/ErrorFallback';
 import Searcher from './components/Searcher';
+import ExportContacts from './components/ExportContacts';
+import ContactForm from './components/ContactForm';
 
 function App() {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    fetch('https://randomuser.me/api/?results=20')
+    fetch('https://randomuser.me/api/?results=3')
     .then(response => response.json())
      .then(contacts => setContacts(contacts.results));
   }, [])
@@ -40,19 +42,72 @@ function App() {
     setContacts([...za]); //clone the list
   }
 
+  const onAddContact = (contact) => {
+    fetch('https://randomuser.me/api/?results=1')
+    .then(response => response.json())
+     .then(contacts => contact.picture = contacts.results[0].picture)
+       .then(() => setContacts([...contacts, contact]));
+
+  }
+
+  const onUpdateContact = (contact) => {
+    setContacts([...contacts]);
+  }
+
+  const onDeleteContact = (contact) => {
+    var newContacts = contacts.filter(function(c) {
+      return c !== contact;
+    })
+    setContacts([...newContacts]);
+  }
+
+  var contact = {
+    picture:{
+      medium:""
+    },
+    name: {
+      title:"",
+      first: "",
+      last: "",
+    },
+    gender: "",
+    location: {
+      city: "",
+      state:"",
+      county:"",
+      street:{
+        name:"",
+        number:""
+      },
+      postcode:"",
+      timezone:{
+        offset:"",
+      },
+      coordinates: {
+        latitude:"",
+        longitude:"",
+      }
+    },
+    email:"",
+    phone:"",
+    cell:"",
+  }
+
   return (
     <div className='tc '>
       <header>
         <h1 className='f1'>My contacts</h1>
       </header>
-      {contacts.length === 0 ? <h2 className='f2'>Loading...</h2> :
+      
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <Searcher searchChange={onSearchChange} az={onAZ} za={onZA}/>
+        <ContactForm contact={contact} action={onAddContact} title ="Add Contact"/>
+        <ExportContacts contacts={contacts}/>
         <Scroll>     
-          <CardList contacts={searchedContacts}/>
+          <CardList searchedContacts={searchedContacts} action={onUpdateContact} onDeleteContact={onDeleteContact}/>
         </Scroll>
       </ErrorBoundary>
-      }
+      
       <footer>
         <hr/><p>Desarrollo de Software para Dispositivos Moviles. 
           {new Date().getFullYear()}</p>
