@@ -89,8 +89,8 @@ function App() {
       }
     },
     email:"example@gmail.com",
-    phone:"986 12 34 56",
-    cell:"",
+    phone:"986 123 456",
+    cell:"666 666 666",
   }
 
   return (
