@@ -88,8 +88,8 @@ function App() {
         longitude:"",
       }
     },
-    email:"",
-    phone:"",
+    email:"example@gmail.com",
+    phone:"986 12 34 56",
     cell:"",
   }
 
